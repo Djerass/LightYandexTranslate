@@ -16,7 +16,7 @@ class yandexTranslateApi:
 
 
     # Get all translation direction for language in language code 
-    # Return a tuple because Api don`t return status code in answer
+    # Return a tuple because Api don`t return status code in the answer
     def get_directions_code(self,language_code):
         """
         language_codes are here:
