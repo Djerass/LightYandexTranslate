@@ -9,7 +9,7 @@ class yandexTranslateApi:
         self.__token=token
         self.__get_directions_url="https://translate.yandex.net/api/v1.5/tr.json/getLangs?key="
         self.__direct_translate_url="https://translate.yandex.net/api/v1.5/tr.json/translate?key="
-
+        self.__detect_language_url="https://translate.yandex.net/api/v1.5/tr.json/detect?key="
     
     def update_token(self,new_token):
         self.__token=new_token    
@@ -49,12 +49,24 @@ class yandexTranslateApi:
         return result.json()
     
 
+    def detect_language(self,text_to_detect,*args_lagnage_codes):
+        url=self.__detect_language_url+self.__token
+        if len(args_lagnage_codes)!=0:
+            hint="&hint="
+            for language_code in args_lagnage_codes:
+                hint+="{0},".format(language_code)
+            hint=hint[0:-1]
+            url+=hint     
+        request_body={'text':text_to_detect}
+        result=requests.post(url,data=request_body)
+        return result.json()
 
         
 
 if __name__=="__main__":
-    translator=yandexTranslateApi("trnsl.1.1.20181112T101031Z.997b88b88f15e476.14ffd53b805ceb2c0c03b77b6c8f0afb79a2585c")
-   # print(translator.get_directions_code('ru'))
+    translator=yandexTranslateApi("token")
+    print(translator.get_directions_code('ru'))
     print(translator.direct_traslate("ru","uk","Привет мир!"))
     print(translator.auto_detect_translate('az','Привет мир!'))
+    print(translator.detect_language("Hello world"))
 
